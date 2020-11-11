@@ -136,8 +136,6 @@ def show_guests():
 
         event.guests.append(guest)
 
-        print(f"Event guests: {event.guests}")
-
         db.session.add(guest)
         db.session.commit()
 
