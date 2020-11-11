@@ -165,7 +165,7 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
         user = User.query.filter_by(username=username).first()
-        if user and password == user.check_password():
+        if user and user.check_password(password):
             login_user(user)
             flash("You are now logged in.")
             return redirect(url_for("main.homepage"))
