@@ -111,4 +111,6 @@ input[type=submit]:hover {
   flex-wrap: nowrap;
   justify-content: space-around;
   align-items: center;
+  width: 25px;
+  height: 25px;
 }

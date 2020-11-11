@@ -29,6 +29,12 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(40), nullable=False)
     email = db.Column(db.String(30), nullable=False)
     password = db.Column(db.String(120), nullable=True)
+    is_admin = db.Column(db.Boolean, default=False)
+
+    def set_is_admin(self):
+        """Set is_admin to true under certain circumstances."""
+        if self.email == "sid@sid.com":
+            self.is_admin = True
 
 
 class Guest(db.Model):

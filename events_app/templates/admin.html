@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<script type="text/javascript" src="{{ url_for('static', filename='/admin.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+
+<button type="button" id="start-add-event">Add Event</button>
+<form class="invisible" action="/add-event" method="POST" id="add-event-form">
+  <input type="text" name="title" placeholder="Event Title">
+  <input type="text" name="description" placeholder="Description">
+  <input type="date" name="date" placeholder="Date format mm-dd-YYYY">
+  <input type="time" name="time" placeholder="Time format HH:MM">
+  <input type="submit" name="submit" value="Add">
+</form>
+
+{% for event in events %}
+
+<div class="events">
+  <a href="{{ url_for('main.rsvp_guest') }}"><h4>{{ event.title }}</h4></a>
+  <p>{{ event.date.strftime('%b %d, %Y') }}</p>
+  <p>{{ event.time.strftime('%H:%M') }}</p>
+  <p>{{ event.description }}</p>
+  <form class="wrapper" action="/admin/delete-event/{{ event.id }}" method="POST">
+    <button type="submit" name="delete-event-btn">Delete</button>
+  </form>
+  <button type="button" id="start-edit-event">Edit</button>
+
+  <div class="invisible" id="edit-event-form">
+    <form class="wrapper" action="/admin/edit-event/{{ event.id }}" method="POST">
+      <input type="text" name="title" value="{{ event.title }}">
+      <input type="text" name="description" value="{{ event.description }}">
+      <input type="date" name="date" value="{{ event.date.strftime('%m-%d-%Y') }}">
+      <input type="time" name="time" value="{{ event.time.strftime('%H:%M') }}">
+      <button type="submit">Update</button>
+    </form>
+  </div>
+</div>
+
+{% endfor %}
+
+
+{% endblock %}
