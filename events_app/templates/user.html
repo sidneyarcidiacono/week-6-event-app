@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<script type="text/javascript" src="{{ url_for('static', filename='user.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+
+<section>
+  <h2>Welcome!</h2>
+  <h3>{{ current_user.name }}</h3>
+  <p>{{ current_user.email }}</p>
+  <p>{{ current_user.username }}</p>
+  <button type="button" name="logout" id="logout-btn">Log Out</button>
+</section>
+
+{% endblock %}

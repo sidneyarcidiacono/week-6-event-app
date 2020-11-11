@@ -9,7 +9,7 @@ from flask import (
     url_for,
     flash,
 )
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 from datetime import date, datetime
 from pprint import PrettyPrinter
 from events_app.main.utils import get_holiday_data
@@ -201,6 +201,8 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and password == user.password:
             login_user(user)
+            flash("You are now logged in.")
+            return redirect(url_for("main.homepage"))
         elif password != user.password:
             flash("Incorrect password")
         else:
@@ -235,19 +237,22 @@ def register():
 
 
 @main.route("/user")
+@login_required
 def user():
     """
     Display user info page.
 
     Provide way to log out.
     """
-    pass
+    return render_template("user.html")
 
 
 @main.route("/logout")
+@login_required
 def logout():
     """Log out user."""
-    pass
+    logout_user()
+    return redirect(url_for("main.homepage"))
 
 
 @main.route("/admin")
