@@ -19,6 +19,7 @@
       {% if current_user.is_authenticated and not current_user.is_admin %}
         <a href="{{ url_for('main.user') }}">Profile</a>
       {% elif current_user.is_admin %}
+        <a href="{{ url_for('main.user') }}">Profile</a>
         <a href="{{ url_for('main.admin') }}">Admin</a>
       {% else %}
         <a href="{{ url_for('main.login') }}">Log In</a>
