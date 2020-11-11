@@ -2,6 +2,7 @@
 from events_app import db, login_manager
 from flask_login import UserMixin
 from sqlalchemy.orm import backref
+from passlib.hash import sha256_crypt
 
 # Set user loader for Flask-Login
 
@@ -35,6 +36,14 @@ class User(UserMixin, db.Model):
         """Set is_admin to true under certain circumstances."""
         if self.email == "sid@sid.com":
             self.is_admin = True
+
+    def set_password(self, password):
+        """Return new user from User class."""
+        self.password = sha256_crypt.hash(password)
+
+    def check_password(self, password):
+        """Verify hashed password and inputted password."""
+        return sha256_crypt.verify(password, self.password)
 
 
 class Guest(db.Model):

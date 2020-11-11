@@ -165,11 +165,11 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
         user = User.query.filter_by(username=username).first()
-        if user and password == user.password:
+        if user and password == user.check_password():
             login_user(user)
             flash("You are now logged in.")
             return redirect(url_for("main.homepage"))
-        elif password != user.password:
+        elif user and password != user.password:
             flash("Incorrect password")
         else:
             flash("User not found. Do you need to sign up?")
@@ -189,17 +189,22 @@ def register():
         email = request.form.get("email")
         password = request.form.get("password")
         confirm_pass = request.form.get("confirm-password")
-        if password == confirm_pass:
+        check_for_user = User.query.filter_by(email=email).all()
+        if not check_for_user and password == confirm_pass:
             user = User(
                 name=name, username=username, email=email, password=password
             )
             user.set_is_admin()
+            user.set_password(password)
             db.session.add(user)
             db.session.commit()
             flash("Thank you for signing up! You can now log in.")
             return redirect(url_for("main.login"))
-        flash("Please ensure that your passwords match.")
-        return redirect(url_for("main.register"))
+        elif check_for_user:
+            flash("A user with this email already exists.")
+        else:
+            flash("Please ensure that your passwords match.")
+            return redirect(url_for("main.register"))
     return render_template("register.html")
 
 
