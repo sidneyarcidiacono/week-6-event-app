@@ -1,11 +1,19 @@
 """Import packages and modules."""
 import os
 import requests
-from flask import Blueprint, request, render_template, redirect, url_for
+from flask import (
+    Blueprint,
+    request,
+    render_template,
+    redirect,
+    url_for,
+    flash,
+)
+from flask_login import login_user, logout_user, current_user
 from datetime import date, datetime
 from pprint import PrettyPrinter
 from events_app.main.utils import get_holiday_data
-from events_app.models import Event, Guest
+from events_app.models import Event, Guest, User
 
 # Import app and db from events_app package so that we can run app
 from events_app import app, db
@@ -32,7 +40,7 @@ month_name = today.strftime("%B")
 
 
 ##########################################
-#           Routes                       #
+#           Main Routes                  #
 ##########################################
 
 
@@ -173,3 +181,80 @@ def rsvp_guest():
     """Show form for guests to RSVP for events."""
     events = Event.query.all()
     return render_template("rsvp.html", events=events)
+
+
+##########################################
+#           User Routes                  #
+##########################################
+
+
+@main.route("/login", methods=["GET", "POST"])
+def login():
+    """
+    Log in user.
+
+    For user that we already have in db.
+    """
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        user = User.query.filter_by(username=username).first()
+        if user and password == user.password:
+            login_user(user)
+        elif password != user.password:
+            flash("Incorrect password")
+        else:
+            flash("User not found. Do you need to sign up?")
+    return render_template("login.html")
+
+
+@main.route("/register", methods=["GET", "POST"])
+def register():
+    """
+    Sign up user.
+
+    For user that does not yet exist.
+    """
+    if request.method == "POST":
+        name = request.form.get("name")
+        username = request.form.get("username")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        confirm_pass = request.form.get("confirm-password")
+        if password == confirm_pass:
+            user = User(
+                name=name, username=username, email=email, password=password
+            )
+            db.session.add(user)
+            db.session.commit()
+            flash("Thank you for signing up! You can now log in.")
+            return redirect(url_for("main.login"))
+        flash("Please ensure that your passwords match.")
+        return redirect(url_for("main.register"))
+    return render_template("register.html")
+
+
+@main.route("/user")
+def user():
+    """
+    Display user info page.
+
+    Provide way to log out.
+    """
+    pass
+
+
+@main.route("/logout")
+def logout():
+    """Log out user."""
+    pass
+
+
+@main.route("/admin")
+def admin():
+    """
+    Access to edit, delete and add events.
+
+    Special access required for this route.
+    """
+    pass

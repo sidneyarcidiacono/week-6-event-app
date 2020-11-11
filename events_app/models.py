@@ -1,6 +1,34 @@
 """Create database models to represent tables."""
-from events_app import db
+from events_app import db, login_manager
+from flask_login import UserMixin
 from sqlalchemy.orm import backref
+
+# Set user loader for Flask-Login
+
+
+@login_manager.user_loader
+def load_user(id):
+    """Define user callback for user_loader function."""
+    return User.query.get(id)
+
+
+########################################################################
+#                   #db.Model classes                                  #
+########################################################################
+
+
+class User(UserMixin, db.Model):
+    """
+    Define User class for Flask-Login.
+
+    We also use this to persist our users in our database.
+    """
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(40), nullable=False)
+    username = db.Column(db.String(40), nullable=False)
+    email = db.Column(db.String(30), nullable=False)
+    password = db.Column(db.String(120), nullable=True)
 
 
 class Guest(db.Model):

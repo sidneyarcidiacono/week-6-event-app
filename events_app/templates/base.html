@@ -13,14 +13,29 @@
   <header>
     <nav>
       <a href="/">Home</a>
-      <a href="/guests">Guests</a>
-      <a href="/rsvp">RSVP</a>
-      <a href="/holidays">Holidays</a>
+      <a href="{{ url_for('main.show_guests') }}">Guests</a>
+      <a href="{{ url_for('main.rsvp_guest') }}">RSVP</a>
+      <a href="{{ url_for('main.about_page') }}">Holidays</a>
+      {% if current_user.is_authenticated %}
+      <a href="{{ url_for('main.user') }}">Profile</a>
+      {% else %}
+      <a href="{{ url_for('main.login') }}">Log In</a>
+      {% endif %}
     </nav>
   </header>
+  <main>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+  </main>
   <footer>
     {% block content %}
     {% endblock %}
+    <div class="spacer"></div>
     <p>
       © FDIS 2020
     </p>

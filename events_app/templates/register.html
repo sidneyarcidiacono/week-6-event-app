@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section>
+  <form action="{{ url_for('main.register') }}" method="POST">
+    <input type="text" name="name" placeholder="Name">
+    <input type="text" name="username" placeholder="Username">
+    <input type="email" name="email" placeholder="Email">
+    <input type="password" name="password" placeholder="Password">
+    <input type="password" name="confirm-password" placeholder="Confirm Password">
+    <input type="submit" name="submit" value="Sign Up!">
+  </form>
+
+  <small>Already have an account? <a href="{{ url_for('main.login') }}">Log In</a></small>
+</section>
+
+{% endblock %}
