@@ -55,32 +55,6 @@ def homepage():
     return render_template("index.html", events=events)
 
 
-@main.route("/add-event", methods=["POST"])
-def add_event():
-    """Add event to Event table."""
-    try:
-        new_event_title = request.form.get("title")
-        new_event_description = request.form.get("description")
-        new_event_date = datetime.strptime(
-            request.form.get("date"), "%m-%d-%Y"
-        )
-        new_event_time = datetime.strptime(request.form.get("time"), "%H:%M")
-
-        event = Event(
-            title=new_event_title,
-            description=new_event_description,
-            date=new_event_date,
-            time=new_event_time,
-            guests=[],
-        )
-
-        db.session.add(event)
-        db.session.commit()
-        return redirect(url_for("main.homepage"))
-    except ValueError:
-        return redirect(url_for("main.homepage"))
-
-
 @main.route("/holidays")
 def about_page():
     """Show user event information."""
@@ -237,6 +211,32 @@ def admin():
     """
     events = Event.query.all()
     return render_template("admin.html", events=events)
+
+
+@main.route("/admin/add-event", methods=["POST"])
+def add_event():
+    """Add event to Event table."""
+    try:
+        new_event_title = request.form.get("title")
+        new_event_description = request.form.get("description")
+        new_event_date = datetime.strptime(
+            request.form.get("date"), "%m-%d-%Y"
+        )
+        new_event_time = datetime.strptime(request.form.get("time"), "%H:%M")
+
+        event = Event(
+            title=new_event_title,
+            description=new_event_description,
+            date=new_event_date,
+            time=new_event_time,
+            guests=[],
+        )
+
+        db.session.add(event)
+        db.session.commit()
+        return redirect(url_for("main.homepage"))
+    except ValueError:
+        return redirect(url_for("main.homepage"))
 
 
 @main.route("/admin/edit-event/<event_id>", methods=["POST"])
