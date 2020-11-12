@@ -214,6 +214,7 @@ def admin():
 
 
 @main.route("/admin/add-event", methods=["POST"])
+@admin_required
 def add_event():
     """Add event to Event table."""
     try:
