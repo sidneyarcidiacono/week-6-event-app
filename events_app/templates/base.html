@@ -15,14 +15,14 @@
       <a href="/">Home</a>
       <a href="{{ url_for('main.show_guests') }}">Guests</a>
       <a href="{{ url_for('main.rsvp_guest') }}">RSVP</a>
-      <a href="{{ url_for('main.about_page') }}">Holidays</a>
+      <a href="{{ url_for('holiday.about_page') }}">Holidays</a>
       {% if current_user.is_authenticated and not current_user.is_admin %}
-        <a href="{{ url_for('main.user') }}">Profile</a>
+        <a href="{{ url_for('user.user_page') }}">Profile</a>
       {% elif current_user.is_admin %}
-        <a href="{{ url_for('main.user') }}">Profile</a>
-        <a href="{{ url_for('main.admin') }}">Admin</a>
+        <a href="{{ url_for('user.user_page') }}">Profile</a>
+        <a href="{{ url_for('admin.admin_page') }}">Admin</a>
       {% else %}
-        <a href="{{ url_for('main.login') }}">Log In</a>
+        <a href="{{ url_for('user.login') }}">Log In</a>
       {% endif %}
     </nav>
   </header>

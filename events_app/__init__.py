@@ -14,11 +14,17 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 
 login_manager = LoginManager(app)
-login_manager.login_view = "main.login"
+login_manager.login_view = "user.login"
 
 from events_app.main.routes import main
+from events_app.user.routes import user
+from events_app.admin.routes import admin
+from events_app.holidays.routes import holiday
 
 app.register_blueprint(main)
+app.register_blueprint(user)
+app.register_blueprint(admin)
+app.register_blueprint(holiday)
 
 with app.app_context():
     db.create_all()

@@ -3,13 +3,13 @@
 {% block content %}
 
 <section>
-  <form action="{{ url_for('main.login') }}" method="POST">
+  <form action="{{ url_for('user.login') }}" method="POST">
     <input type="text" name="username" placeholder="Username">
     <input type="password" name="password" placeholder="Password">
     <input type="submit" name="submit" value="Log In">
   </form>
 
-  <small>Don't have an account yet? <a href="{{ url_for('main.register') }}">Sign Up</a></small>
+  <small>Don't have an account yet? <a href="{{ url_for('user.register') }}">Sign Up</a></small>
 </section>
 
 {% endblock %}

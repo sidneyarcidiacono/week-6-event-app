@@ -3,6 +3,7 @@ const startEditEvent = document.getElementById('start-edit-event')
 const editEventForm = document.getElementById('edit-event-form')
 const addEventForm = document.getElementById('add-event-form')
 
+
 const addEventHandler = () => {
   addEventForm.style.display = 'flex'
 }
